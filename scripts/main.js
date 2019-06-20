@@ -34,9 +34,16 @@ map.on("click", function (e) {
   map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
     const element = popup.getElement();
     const coordinate = e.coordinate;
-    content.innerHTML = `<h3>${feature.values_.Heading}</h3><p>${feature.values_.SchemeDescription}</p>`;
+    content.innerHTML = `<header-bar><h3>${feature.values_.Heading}</h3></header-bar><p>${feature.values_.SchemeDescription}</p>`;
     popup.setPosition(coordinate);
   })
+
+  const closer = document.getElementById('popup-closer');
+  closer.onclick = function() {
+    popup.setPosition(undefined);
+    closer.blur();
+    return false;
+  };
 });
 
 const addJson = () => {
