@@ -4,6 +4,13 @@ const bg_map = new ol.layer.Tile({
   })
 });
 
+
+const image = new ol.style.Circle({
+  fill: new ol.style.Fill({ color: [158, 202, 225,0.7] }),
+  radius: 7,
+  stroke: new ol.style.Stroke({ color: 'black', width: 0.2 })
+});
+
 const map = new ol.Map({
   target: 'map',
   layers: [
@@ -15,22 +22,29 @@ const map = new ol.Map({
   })
 });
 
-const image = new ol.style.Circle({
-  fill: new ol.style.Fill({ color: [158, 202, 225,0.7] }),
-  radius: 7,
-  stroke: new ol.style.Stroke({ color: 'black', width: 1 })
+
+const popup = new ol.Overlay({
+  element: document.getElementById('popup')
 });
 
-// const popup = new ol.Overlay({
-//   // element : "pleb", 
-//   positioning: 'bottom-center',
-// });
-// map.addOverlay(popup);
+map.addOverlay(popup);
 
-// map.on('click', function (evt) {
-//   const prettyCoord = ol.coordinate.toStringHDMS(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'), 2);
-//   popup.show(evt.coordinate, '<div><h2>Coordinates</h2><p>' + prettyCoord + '</p></div>');
-// });
+let content = document.getElementById('popup-content');
+
+
+
+map.on("click", function (e) {
+  map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
+    console.log(feature.values_)
+    const element = popup.getElement();
+    const coordinate = e.coordinate;
+    content.innerHTML = '<p>some jazz:</p><code>';
+    popup.setPosition(coordinate);
+    // and add it to the map
+    // map.addOverlay(overlay);
+    // return feature.values_
+  })
+});
 
 const addJson = () => {
   action()
@@ -40,7 +54,6 @@ const action = async () => {
   const response = await fetch(`https://gs-planning-proto.s3-eu-west-1.amazonaws.com/london_test_area_planning.geojson` , {
    });
   const planningJson = await response.json();
-  console.log(planningJson)
   const vectorSource = new ol.source.Vector({
     features: (new ol.format.GeoJSON({
       featureProjection: "EPSG:3857"
