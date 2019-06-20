@@ -4,11 +4,13 @@ const bg_map = new ol.layer.Tile({
   })
 });
 
-
-const image = new ol.style.Circle({
-  fill: new ol.style.Fill({ color: [158, 202, 225,0.7] }),
-  radius: 7,
-  stroke: new ol.style.Stroke({ color: 'black', width: 0.2 })
+const iconStyle = new ol.style.Style({
+  image: new ol.style.Icon(/** @type {module:ol/style/Icon~Options} */({
+    anchor: [0.5, 46],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+    src: 'styles/marker-icon.png'
+  }))
 });
 
 const map = new ol.Map({
@@ -62,11 +64,7 @@ const action = async () => {
       xy: false
     }
   });
-  const vectorLayer = new ol.layer.Vector({
-    source: vectorSource,
-    style: new ol.style.Style({
-      image: image
-    })
-  });
+  const vectorLayer = new ol.layer.Vector({ source: vectorSource });
+  vectorLayer.setStyle(iconStyle)
   map.addLayer(vectorLayer);
 };
