@@ -4,6 +4,7 @@
 }
 .ol-popup {
   position: absolute;
+  border-radius: 10px;
   background-color: white;
   padding: 15px;
   border: 1px solid #cccccc;
