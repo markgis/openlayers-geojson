@@ -22,7 +22,6 @@ const map = new ol.Map({
   })
 });
 
-
 const popup = new ol.Overlay({
   element: document.getElementById('popup')
 });
@@ -31,18 +30,12 @@ map.addOverlay(popup);
 
 let content = document.getElementById('popup-content');
 
-
-
 map.on("click", function (e) {
   map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
-    console.log(feature.values_)
     const element = popup.getElement();
     const coordinate = e.coordinate;
-    content.innerHTML = '<p>some jazz:</p><code>';
+    content.innerHTML = `<h3>${feature.values_.Heading}</h3><p>${feature.values_.SchemeDescription}</p>`;
     popup.setPosition(coordinate);
-    // and add it to the map
-    // map.addOverlay(overlay);
-    // return feature.values_
   })
 });
 
@@ -70,6 +63,3 @@ const action = async () => {
   });
   map.addLayer(vectorLayer);
 };
-
-
-
